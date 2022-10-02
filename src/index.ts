@@ -1,9 +1,14 @@
 import express from "express";
 import morgan from "morgan";
+import "express-async-errors";
+import "dotenv/config";
+import { env } from "process";
 
 import router from "./routes";
+import connectMongoose from "./config/database.config";
 
 async function bootsrap() {
+    await connectMongoose();
     const app = express();
     app
         .use(express.json())
@@ -17,7 +22,7 @@ async function bootsrap() {
                     success: false
                 })
         })
-        .listen(process.env.port || 3000, () => console.warn("Listening on port 3000"))
+        .listen(env.PORT, () => console.warn(`[#] server listening on port:${env.PORT}`))
 }
 
 bootsrap()
