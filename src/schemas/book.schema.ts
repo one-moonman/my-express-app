@@ -1,15 +1,8 @@
-import { Schema, model, Document } from "mongoose";
+import Joi from "joi";
+import { IBook } from "../models/book.model";
 
-export interface IBook {
-    name: string;
-    ganre?: string;
-}
+export default Joi.object<IBook>().keys({
+    name: Joi.string().min(3).max(30).required(),
+    ganre: Joi.string().min(3).max(30)
+})
 
-export interface BookDocument extends Document, IBook { }
-
-export const bookSchema = new Schema<IBook>({
-    name: { type: String, required: true, unique: true },
-    ganre: String,
-});
-
-export const Book = model<IBook>('Book', bookSchema);

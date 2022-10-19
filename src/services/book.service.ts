@@ -1,13 +1,10 @@
-import { Book, BookDocument, IBook } from "../schemas/book.schema";
+import { BookModel, IBook, BookDoc } from "../models/book.model";
 
 export default {
-    create: (book: IBook) => {
-        const doc = new Book(book);
-        return doc.save();
-    },
-    findAll: () => (Book.find({}).exec()),
-    findById: (id: string) => (Book.findById(id).exec()),
-    findByName: (name: string) => (Book.findOne({ name }).exec()),
-    update: (id: string, updates: Partial<IBook>) => (Book.findByIdAndUpdate(id, updates).exec()),
-    delete: (id: string) => (Book.findByIdAndDelete(id).exec())
+    create: async (book: IBook): Promise<BookDoc> => (BookModel.create(book)),
+    findAll: async (): Promise<BookDoc[]> => (BookModel.find({}).exec()),
+    findById: async (id: string): Promise<BookDoc | null> => (BookModel.findById(id)),
+    findByName: async (name: string): Promise<BookDoc | null> => (BookModel.findOne({ name }).exec()),
+    update: async (id: string, updates: Partial<IBook>): Promise<BookDoc | null> => (BookModel.findByIdAndUpdate(id, updates).exec()),
+    delete: async (id: string): Promise<BookDoc | null> => (BookModel.findByIdAndDelete(id).exec())
 }
